@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../app-center-layout.html">
+
+
+<dom-module id="demo-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      
+      .child {
+        height: 200px;
+        width: 200px;
+        background-color: black;
+        border: 1px solid white;
+      }
+
+      .slot-header {
+        height: 50px;
+        width: 100%;
+        background-color: black;
+      }
+
+    </style>
+
+    <app-center-layout limit="600" only="horizontal">
+      <div slot="header" class="slot-header"></div>
+      <div slot="centered-child" class="child"></div>
+    </app-center-layout>  
+  
+  </template>
+
+  <script>
+    Polymer({
+      is: 'demo-app',
+    });
+  </script>
+</dom-module>
