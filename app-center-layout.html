@@ -5,6 +5,7 @@
 <!--
 `app-center-layout`
 A layout with a header and a centered element over the page.
+Note: remember not to add margins or paddings to the body 
 
 @demo demo/index.html 
 -->
@@ -15,9 +16,6 @@ A layout with a header and a centered element over the page.
         <style>
             :host {
                 display: block;
-            }
-            .container {
-                background-color: #ccc;
             }
         </style>
     
@@ -41,8 +39,10 @@ A layout with a header and a centered element over the page.
             }
         </style>
         
-        <slot id="header" name="header"></slot>
-    
+        <div id="header">
+            <slot name="header"></slot>
+        </div>
+
         <div class$="container {{_pageCenteredClass}}" style$="min-height:{{_containerHeight}}px">
             <slot name="centered-child"></slot>
         </div>
@@ -99,8 +99,10 @@ A layout with a header and a centered element over the page.
               '_viewportHeightChanged(_viewportHeight, limit, only)'
           ],
   
-          ready: function() {
-              this._headerHeight = this.$.header.assignedNodes()[0].offsetHeight;
+          attached: function() {
+              this.async(function(){
+                  this._headerHeight = this.$.header.offsetHeight;
+                });
           },
   
           _viewportHeightChanged: function(_viewportHeight, limit, only) {
