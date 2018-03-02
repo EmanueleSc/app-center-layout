@@ -5,9 +5,9 @@
 <!--
 `app-center-layout`
 A layout with a header and a centered element over the page.
-Note: remember not to add margins or paddings to the body 
+Note: remember not to add margins or paddings to the body
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="app-center-layout">
@@ -18,27 +18,27 @@ Note: remember not to add margins or paddings to the body
                 display: block;
             }
         </style>
-    
+
         <style is="custom-style">
             .container {
                 @apply --layout-inline;
                 @apply --layout-vertical;
             }
-    
+
             .page-centered {
                 @apply --layout-center-justified;
                 @apply --layout-center;
             }
-    
+
             .only-vertical-centered {
                 @apply --layout-center-justified;
             }
-    
+
             .only-horizontal-centered {
                 @apply --layout-center;
             }
         </style>
-        
+
         <div id="header">
             <slot name="header"></slot>
         </div>
@@ -46,15 +46,15 @@ Note: remember not to add margins or paddings to the body
         <div class$="container {{_pageCenteredClass}}" style$="min-height:{{_containerHeight}}px">
             <slot name="centered-child"></slot>
         </div>
-    
+
         <window-resize height="{{_viewportHeight}}"></window-resize>
-    
+
     </template>
-      
+
     <script>
     Polymer({
           is: "app-center-layout",
-          
+
           properties: {
               /**
                * Definisce il limite di altezza della view
@@ -65,7 +65,7 @@ Note: remember not to add margins or paddings to the body
                   type: Number,
                   value: 500
               },
-              
+
               /**
                * Only può essere 'horizontal', 'vertical', 'centered'.
                * Se è 'horizontal' l'elemento è solo centrato orizzontalmente.
@@ -76,54 +76,58 @@ Note: remember not to add margins or paddings to the body
               only: {
                   type: String
               },
-  
+
               _viewportHeight: {
                   type: String
               },
-  
+
               _containerHeight: {
                   type: Number,
                   computed: '_computeContainerHeight(_viewportHeight, _headerHeight)'
               },
-  
+
               _headerHeight: {
                   type: Number,
               },
-  
+
               _pageCenteredClass: {
                   type: String
               },
           },
-  
+
           observers: [
               '_viewportHeightChanged(_viewportHeight, limit, only)'
           ],
-  
+
           attached: function() {
               this.async(function(){
                   this._headerHeight = this.$.header.offsetHeight;
                 });
           },
-  
+
           _viewportHeightChanged: function(_viewportHeight, limit, only) {
-  
+
               if(_viewportHeight >= limit) {
                   this._pageCenteredClass = "page-centered";
               } else {
-                  if(only.localeCompare("horizontal") == 0) {
-                      this._pageCenteredClass = "only-horizontal-centered";
-                  } else 
-                  
-                  if(only.localeCompare("vertical") == 0) {
-                      this._pageCenteredClass = "only-vertical-centered";
+                  if (only === undefined){
+                    this._pageCenteredClass = "page-centered";
+                  }else
+                  if(only === "horizontal") {
+                    this._pageCenteredClass = "only-horizontal-centered";
                   } else
-  
-                  if(only.localeCompare("centered") == 0) {
-                      this._pageCenteredClass = "page-centered";
+
+                  if(only === "vertical") {
+                    this._pageCenteredClass = "only-vertical-centered";
+                  } else
+
+                  if(only === "centered") {
+                    this._pageCenteredClass = "page-centered";
                   }
+
               }
           },
-  
+
           _computeContainerHeight: function(viewportHeight, headerHeight) {
               return viewportHeight - headerHeight;
           }
